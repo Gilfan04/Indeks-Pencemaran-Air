@@ -1,0 +1,35 @@
+import streamlit as st
+import pandas as pd
+
+# Judul Aplikasi
+st.title("Indeks Pencemaran Air")
+
+# Input Parameter Kimia
+st.header("Masukkan Parameter Kimia")
+ph = st.number_input("pH", min_value=0.0, max_value=14.0, value=7.0)
+bod = st.number_input("BOD (mg/L)", min_value=0.0, value=0.0)
+cod = st.number_input("COD (mg/L)", min_value=0.0, value=0.0)
+tss = st.number_input("TSS (mg/L)", min_value=0.0, value=0.0)
+
+# Fungsi untuk Menghitung Indeks Pencemaran
+def hitung_indeks_pencemaran(ph, bod, cod, tss):
+    # Contoh rumus sederhana untuk menghitung indeks pencemaran
+    indeks = (bod * 0.3) + (cod * 0.5) + (tss * 0.2)
+    return indeks
+
+# Hitung Indeks Pencemaran
+if st.button("Hitung Indeks Pencemaran"):
+    indeks = hitung_indeks_pencemaran(ph, bod, cod, tss)
+    st.success(f"Indeks Pencemaran Air: {indeks:.2f}")
+
+# Menampilkan Data
+st.header("Data Parameter Kimia")
+data = {
+    "pH": [ph],
+    "BOD (mg/L)": [bod],
+    "COD (mg/L)": [cod],
+    "TSS (mg/L)": [tss],
+    "Indeks Pencemaran": [indeks if 'indeks' in locals() else None]
+}
+df = pd.DataFrame(data)
+st.write(df)
